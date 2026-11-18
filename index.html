@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5e9d8">
+<title>放火馬｜火馬販賣所</title>
+<style>
+:root{
+  --cream:#f5e9d8;--paper:#fff8ec;--peach:#e9b49a;--orange:#d8795d;
+  --rust:#b85f49;--deep:#70483d;--green:#536b58;--sage:#89947b;
+  --yellow:#e8c58b;--ink:#493b34;--muted:#8b786b;--line:#ddc9b5;
+  --shadow:0 8px 0 rgba(112,72,61,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  background-color:var(--cream);
+  background-image:radial-gradient(rgba(115,77,56,.12) .65px,transparent .8px);
+  background-size:6px 6px;
+}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.page{width:min(1080px,94%);margin:auto;padding:24px 0 42px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--deep);font-weight:900;font-size:13px;letter-spacing:.12em}
+.brand-mark{width:38px;height:38px;display:grid;place-items:center;border:1.5px solid var(--deep);border-radius:50%;background:var(--orange);color:#fff6e9;font-size:20px;box-shadow:2px 2px 0 var(--deep)}
+.top-actions{display:flex;gap:8px}
+.small-btn{border:1.5px solid var(--deep);background:var(--paper);color:var(--deep);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800}
+.small-btn:hover{background:var(--deep);color:var(--paper)}
+.hero{text-align:center;max-width:730px;margin:10px auto 27px}
+.eyebrow{font-size:11px;color:var(--rust);font-weight:900;letter-spacing:.28em}
+h1{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(40px,7vw,70px);font-weight:800;letter-spacing:.14em;color:var(--deep);margin:9px 0 8px}
+.subtitle{font-size:14px;line-height:1.9;color:#78665b;margin:0}
+.seal{display:inline-block;margin-top:13px;padding:5px 13px;border:1px solid var(--rust);color:var(--rust);font-size:11px;letter-spacing:.14em;transform:rotate(-2deg)}
+.section-label{display:flex;align-items:center;gap:12px;font-size:14px;letter-spacing:.12em;color:var(--deep);font-weight:900;margin:0 0 14px}
+.section-label:after{content:"";height:1px;background:var(--line);flex:1}
+.sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:25px}
+.size-option{border:1.5px solid var(--deep);background:var(--paper);color:var(--deep);min-height:116px;padding:12px;border-radius:5px 17px 5px 17px;box-shadow:3px 3px 0 rgba(112,72,61,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:.18s}
+.size-option:hover{transform:translateY(-3px)}
+.size-option.active{background:#f0d4c1;border:2px solid var(--rust);box-shadow:3px 5px 0 rgba(184,95,73,.2);transform:translateY(-2px)}
+.size-figure{height:38px;display:flex;align-items:center;justify-content:center;font-size:30px;filter:saturate(.8)}
+.size-option strong{font-size:15px;letter-spacing:.1em}
+.size-option small{font-size:11px;color:#887367}
+.machine-wrap{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px;align-items:stretch}
+.machine{position:relative;overflow:hidden;background-color:var(--orange);border:3px solid var(--deep);border-radius:22px 22px 8px 8px;padding:18px;box-shadow:var(--shadow)}
+.machine:before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,248,236,.55);border-radius:16px 16px 4px 4px;pointer-events:none}
+.machine:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.2;background-image:radial-gradient(rgba(255,248,236,.8) .7px,transparent .8px);background-size:5px 5px;mix-blend-mode:soft-light}
+.machine-head,.machine-window,.machine-controls,.machine-foot{position:relative;z-index:1}
+.machine-head{display:flex;align-items:center;justify-content:space-between;color:#fff5e6}
+.machine-name{font-family:Georgia,serif;font-size:19px;font-weight:bold;letter-spacing:.1em}
+.machine-number{font-size:10px;letter-spacing:.12em;border:1px solid rgba(255,255,255,.7);padding:5px 8px}
+.machine-window{background:#7b5548;border:4px solid #f1d8bd;border-radius:12px;margin:15px 0 13px;padding:12px}
+.window-top{display:flex;justify-content:space-between;color:#f8e8d5;font-size:10px;letter-spacing:.13em;margin-bottom:9px}
+.display{min-height:190px;background:#f6e9d7;border:2px solid #e4c6a8;border-radius:5px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:12px}
+.display:before{content:"";position:absolute;inset:0;opacity:.35;background-image:radial-gradient(#b98b70 .6px,transparent .8px);background-size:5px 5px}
+.display-inner{position:relative;text-align:center;color:var(--deep);z-index:1}
+.display-inner .big-icon{display:block;font-size:39px;margin-bottom:5px}
+.display-inner strong{font-family:"Noto Serif TC",serif;font-size:19px;letter-spacing:.1em}
+.display-inner p{font-size:11px;line-height:1.7;color:#8b6d5c;margin:7px 0 0}
+.machine-controls{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.slot-label{color:#fff1df;font-size:10px;letter-spacing:.13em;margin-bottom:6px}
+.coin-slot{height:38px;border:2px solid #f3d9bd;background:#815246;border-radius:5px;display:flex;align-items:center;padding:4px 10px;gap:8px;color:#fff0dc;font-size:11px}
+.coin{width:19px;height:19px;border-radius:50%;background:var(--yellow);border:2px solid #a77c4d;box-shadow:inset 0 0 0 2px #f8dfae}
+.pull-btn{width:91px;height:67px;border-radius:12px;border:2px solid #f5dec4;background:var(--green);color:#fff7e9;font-weight:900;line-height:1.5;box-shadow:0 4px 0 #405746;transition:.12s}
+.pull-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #405746}
+.pull-btn:disabled{opacity:.5;cursor:not-allowed}
+.machine-foot{display:flex;justify-content:space-between;color:#fff0df;font-size:10px;letter-spacing:.1em;margin-top:13px}
+.side-panel{background:var(--paper);border:1.5px solid var(--deep);border-radius:6px 17px 6px 17px;padding:17px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.side-panel h3{font-family:"Noto Serif TC",serif;color:var(--deep);font-size:19px;margin:0 0 10px}
+.side-panel p{font-size:12px;line-height:1.9;color:#79685d;margin:0 0 12px}
+.status{margin-top:auto;background:#f1e2d0;border-left:3px solid var(--orange);padding:10px;font-size:11px;line-height:1.7;color:#746052}
+.status strong{color:var(--rust)}
+.result-area{display:none;margin-top:25px}
+.result-area.show{display:block;animation:rise .55s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.paper{background:var(--paper);border:1.5px solid var(--deep);box-shadow:5px 5px 0 rgba(112,72,61,.12);position:relative;overflow:hidden}
+.horse-paper{padding:17px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:315px}
+.paper-kicker{font-size:10px;letter-spacing:.18em;color:var(--rust);font-weight:900}
+.horse-art{width:min(100%,245px);height:175px;margin:8px auto 5px;display:grid;place-items:center;position:relative}
+.horse-art svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(2px 4px 0 rgba(112,72,61,.12))}
+.horse-caption{font-family:"Noto Serif TC",serif;color:var(--deep);font-size:21px;letter-spacing:.12em;margin:2px 0 5px}
+.horse-desc{font-size:11px;line-height:1.7;color:#89776a;margin:0}
+.lot-paper{padding:20px 19px;min-height:315px;background-color:#fff7e8;background-image:radial-gradient(rgba(160,115,78,.12) .65px,transparent .8px);background-size:6px 6px}
+.lot-paper:before,.lot-paper:after{content:"";position:absolute;left:13px;right:13px;border-top:1px dashed #d5bda4}
+.lot-paper:before{top:11px}.lot-paper:after{bottom:11px}
+.lot-top{display:flex;justify-content:space-between;color:var(--rust);font-size:10px;font-weight:900;letter-spacing:.14em}
+.lot-grade{text-align:center;margin:15px 0 5px;color:var(--rust);font-family:"Noto Serif TC",serif;font-size:14px;letter-spacing:.16em}
+.lot-title{text-align:center;font-family:"Noto Serif TC",serif;font-size:24px;letter-spacing:.12em;color:var(--deep);margin:5px 0 13px}
+.lot-poem{text-align:center;white-space:pre-line;font-family:"Noto Serif TC",serif;font-size:16px;line-height:2.1;color:#59483e;margin:0 0 13px}
+.lot-explain{border-top:1px dashed #d4bea5;padding-top:11px;font-size:12px;line-height:1.9;color:#78675b}
+.lot-explain strong{color:var(--rust)}
+.result-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:15px}
+.action-btn{border:1.5px solid var(--deep);background:var(--green);color:#fff8ec;padding:10px 16px;border-radius:4px;font-size:12px;font-weight:900}
+.action-btn.secondary{background:transparent;color:var(--deep)}
+.action-btn:hover{transform:translateY(-2px)}
+.collection{margin-top:34px}
+.collection-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.collection-head h2{font-family:"Noto Serif TC",serif;color:var(--deep);font-size:22px;margin:0}
+.collection-count{font-size:11px;color:var(--muted)}
+.collection-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.saved-item{border:1px solid var(--line);background:rgba(255,248,236,.8);color:var(--deep);text-align:left;padding:12px;min-height:95px}
+.saved-item:hover{border-color:var(--rust);background:var(--paper)}
+.saved-item strong{display:block;font-size:14px;margin:7px 0}
+.saved-item small{font-size:10px;color:#8b786b}
+.empty{grid-column:1/-1;border:1px dashed #cdb69e;padding:22px;text-align:center;color:#907f70;font-size:12px}
+.footer{text-align:center;color:#9a8473;font-size:10px;letter-spacing:.13em;margin-top:38px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--deep);color:#fff7e9;padding:11px 18px;border-radius:3px;font-size:12px;z-index:10;transition:.25s;box-shadow:0 4px 15px #0002;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.machine.drawing .display-inner{animation:flicker .18s infinite alternate}
+.machine.drawing .display:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(216,121,93,.28) 50%,transparent 55%);animation:scan .55s linear infinite;z-index:2}
+@keyframes flicker{from{opacity:.5;transform:scale(.98)}to{opacity:1;transform:scale(1.02)}}
+@keyframes scan{from{transform:translateY(-100%)}to{transform:translateY(100%)}}
+@media(max-width:760px){
+ .page{width:min(100% - 26px,570px);padding-top:16px}
+ .brand{font-size:11px}.small-btn{font-size:11px;padding:8px 9px}
+ .machine-wrap{grid-template-columns:1fr}.side-panel{min-height:0}
+ .side-panel p{margin-bottom:8px}.display{min-height:165px}
+ .collection-list{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+ .topbar{align-items:flex-start}.brand{max-width:150px;line-height:1.5}
+ .top-actions{gap:5px}.sizes{gap:7px}.size-option{min-height:105px;padding:8px 4px}
+ .size-option strong{font-size:13px}.size-option small{font-size:10px}
+ .machine{padding:14px}.machine-name{font-size:16px}.machine-number{font-size:9px}
+ .result-grid{grid-template-columns:1fr}.horse-paper,.lot-paper{min-height:0}
+ .horse-paper{padding:14px}.horse-art{height:160px}
+ .lot-paper{padding:20px 18px}.collection-list{grid-template-columns:1fr 1fr}
+ .ticket-actions{gap:7px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">馬</span><span>放火馬・平安好運販賣所</span></div>
+  <div class="top-actions">
+    <button class="small-btn" id="soundToggle" type="button" aria-pressed="false">♫ 音效：關</button>
+    <button class="small-btn" id="restartButton" type="button">↺ 重新開始</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">TAINAN・HOU BI / A LITTLE BLESSING</div>
+  <h1>放火馬</h1>
+  <p class="subtitle">選一隻屬於你的火馬，領一張池王的籤。<br>願火光照路，平安隨行。</p>
+  <span class="seal">一馬一籤・把祝福帶回家</span>
+</section>
+
+<main>
+<section aria-labelledby="sizeTitle">
+  <h2 class="section-label" id="sizeTitle"><span>01 / 選擇火馬大小</span></h2>
+  <div class="sizes" id="sizeOptions">
+    <button class="size-option active" type="button" data-size="小火馬" aria-pressed="true">
+      <span class="size-figure">♞</span><strong>小火馬</strong><small>掌心收藏・輕巧隨行</small>
+    </button>
+    <button class="size-option" type="button" data-size="中火馬" aria-pressed="false">
+      <span class="size-figure">♞</span><strong>中火馬</strong><small>日常陪伴・剛剛好</small>
+    </button>
+    <button class="size-option" type="button" data-size="大火馬" aria-pressed="false">
+      <span class="size-figure">♞</span><strong>大火馬</strong><small>鎮守一方・氣勢圓滿</small>
+    </button>
+  </div>
+</section>
+
+<section aria-labelledby="machineTitle">
+  <h2 class="section-label" id="machineTitle"><span>02 / 啟動放火馬販賣機</span></h2>
+  <div class="machine-wrap">
+    <div class="machine" id="machine">
+      <div class="machine-head">
+        <div class="machine-name">FIRE HORSE DISPENSER</div>
+        <div class="machine-number">HOU BI・NO. 001</div>
+      </div>
+      <div class="machine-window">
+        <div class="window-top"><span>BLESSING & FIRE HORSE</span><span>請領取你的祝福</span></div>
+        <div class="display" aria-live="polite">
+          <div class="display-inner" id="displayContent">
+            <span class="big-icon">♞</span>
+            <strong>你的火馬正在等候</strong>
+            <p>選好火馬大小，按下按鈕<br>領取專屬火馬與池王籤詩。</p>
+          </div>
+        </div>
+      </div>
+      <div class="machine-controls">
+        <div>
+          <div class="slot-label">COIN SLOT / 投入一份心意</div>
+          <div class="coin-slot"><span class="coin"></span><span id="coinText">尚未投入・等待啟動</span></div>
+        </div>
+        <button class="pull-btn" id="drawButton" type="button">領取<br>火馬與籤</button>
+      </div>
+      <div class="machine-foot"><span>HAVE A SAFE JOURNEY</span><span>✳ GOOD LUCK ✳</span></div>
+    </div>
+    <aside class="side-panel">
+      <h3>領取小指南</h3>
+      <p>每一隻火馬，都帶著一份祝福。選擇喜歡的尺寸，讓販賣機替你送出一隻火馬與一張池王籤。</p>
+      <p>① 選擇小、中或大火馬<br>② 按下領取按鈕，等待機器運轉<br>③ 收下你的火馬與池王籤<br>④ 喜歡的組合可以收藏起來</p>
+      <div class="status" id="statusText"><strong>機器狀態：</strong>待機中。先挑選一隻想帶回家的火馬吧。</div>
+    </aside>
+  </div>
+</section>
+
+<section class="result-area" id="resultArea" aria-live="polite">
+  <h2 class="section-label"><span>03 / 你的火馬與池王籤已送達</span></h2>
+  <div class="result-grid">
+    <article class="paper horse-paper">
+      <div class="paper-kicker">YOUR FIRE HORSE / 專屬火馬</div>
+      <div class="horse-art" id="horseArt"></div>
+      <h3 class="horse-caption" id="horseName">平安火馬</h3>
+      <p class="horse-desc" id="horseDescription">願這隻火馬陪你走過每一段路。</p>
+    </article>
+    <article class="paper lot-paper">
+      <div class="lot-top"><span>池王爺・平安籤</span><span id="lotNumber">第○籤</span></div>
+      <div class="lot-grade" id="lotGrade">吉籤</div>
+      <h3 class="lot-title" id="lotTitle">順風而行</h3>
+      <p class="lot-poem" id="lotPoem"></p>
+      <div class="lot-explain" id="lotExplain"></div>
+    </article>
+  </div>
+  <div class="result-actions">
+    <button class="action-btn" id="saveButton" type="button">♡ 收藏這組祝福</button>
+    <button class="action-btn secondary" id="againButton" type="button">再領取一次</button>
+  </div>
+</section>
+
+<section class="collection">
+  <div class="collection-head">
+    <h2>我的火馬收藏簿</h2><span class="collection-count" id="collectionCount">0 組已收藏</span>
+  </div>
+  <div class="collection-list" id="collectionList">
+    <div class="empty">還沒有收藏的火馬。遇見喜歡的祝福，就把它留下來吧。</div>
+  </div>
+</section>
+</main>
+<footer class="footer">放火馬・台南後壁文化記憶與祝福體驗</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  // 籤詩文字為本互動作品的創作示例，並非正式廟方籤文或問事結果。
+  const lots = [
+    {no:"第一籤",grade:"上吉",title:"春風得意",poem:"春風輕拂過山崗\n前路花開有暗香\n心存善念勤向前\n平安喜樂在身旁",explain:"<strong>籤意：</strong>眼前的路逐漸明朗，保持善意與耐心，事情會一步一步往好的方向前進。"},
+    {no:"第六籤",grade:"中吉",title:"守得雲開",poem:"雲散月明照小窗\n不須急步問前方\n靜心等待好時節\n一份耕耘一份香",explain:"<strong>籤意：</strong>遇到停滯時不必慌張，先照顧好自己、穩穩準備，適合的時機自然會到來。"},
+    {no:"第十二籤",grade:"吉",title:"貴人相伴",poem:"行到溪邊水自清\n途中自有同行人\n若逢難處開口問\n一點微光也成燈",explain:"<strong>籤意：</strong>不必什麼事都獨自承擔。願意溝通、接受幫助，會讓眼前的難題有新的出口。"},
+    {no:"第二十籤",grade:"中吉",title:"慢行有福",poem:"一步一印踏實地\n沿途風景莫心急\n平常日子藏好意\n回頭已是好光景",explain:"<strong>籤意：</strong>把步伐放慢，留意生活中的小確幸。現在累積的每一點努力，都有它的意義。"},
+    {no:"第二十八籤",grade:"上吉",title:"心願漸成",poem:"心中種子待春陽\n勤以灌溉自芬芳\n莫怕路遠天色晚\n終有一日見花香",explain:"<strong>籤意：</strong>適合持續投入正在努力的目標，不求一步到位，持續前進就會逐漸看見成果。"},
+    {no:"第三十六籤",grade:"吉",title:"平安是福",poem:"一輪暖日照門庭\n家和人安萬事寧\n出門記得添衣暖\n歸來燈火總溫馨",explain:"<strong>籤意：</strong>把健康、平安與身邊的人放在心上。好好生活，就是此刻最重要的祝福。"}
+  ];
+  const horseNames = ["暖焰同行","橘光守護","福火小將","安行火馬","吉焰相伴","暖心奔馳"];
+  const horseDescriptions = [
+    "願這隻火馬陪你走過每一段路，將勇氣與平安放在心上。",
+    "一點溫暖的火光，陪你照亮日常，也照顧心裡的願望。",
+    "把祝福收進掌心，願每次出發都有安心的力量。",
+    "願你步伐自在、心裡有光，走到哪裡都平安順心。"
+  ];
+  const sizeInfo = {
+    "小火馬":{scale:0.78,caption:"掌心大小・輕巧隨行",mane:"#d8795d"},
+    "中火馬":{scale:1,caption:"日常陪伴・剛剛好",mane:"#c86f55"},
+    "大火馬":{scale:1.17,caption:"鎮守一方・氣勢圓滿",mane:"#b85f49"}
+  };
+  const $ = id => document.getElementById(id);
+  const storageKey="fanghuomaCollectionV1";
+  let size="小火馬", current=null, drawing=false, soundOn=false, audioContext=null, toastTimer;
+  let saved=loadSaved(), previousLot=-1;
+
+  function loadSaved(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return []}}
+  function toast(message){
+    $("toast").textContent=message;$("toast").classList.add("show");
+    clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2300);
+  }
+  function beep(freq=440,duration=.1,type="sine",volume=.04){
+    if(!soundOn)return;
+    try{
+      audioContext ||= new (window.AudioContext||window.webkitAudioContext)();
+      if(audioContext.state==="suspended")audioContext.resume();
+      const osc=audioContext.createOscillator(),gain=audioContext.createGain();
+      osc.type=type;osc.frequency.value=freq;gain.gain.setValueAtTime(volume,audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
+      osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+duration);
+    }catch(e){}
+  }
+  function setSize(next){
+    if(drawing)return;
+    size=next;
+    document.querySelectorAll(".size-option").forEach(btn=>{
+      const active=btn.dataset.size===size;
+      btn.classList.toggle("active",active);btn.setAttribute("aria-pressed",String(active));
+    });
+    $("statusText").innerHTML=`<strong>機器狀態：</strong>已選擇「${size}」。準備領取你的火馬與祝福。`;
+    $("displayContent").innerHTML=`<span class="big-icon">♞</span><strong>${size}已準備就緒</strong><p>${sizeInfo[size].caption}<br>按下按鈕，領取專屬火馬與池王籤。</p>`;
+    beep(520,.07);
+  }
+  function horseSVG(selectedSize){
+    const info=sizeInfo[selectedSize];
+    const scale=info.scale;
+    return `<svg viewBox="0 0 260 180" role="img" aria-label="${selectedSize}插畫">
+      <g transform="translate(130 91) scale(${scale}) translate(-130 -91)">
+        <path d="M76 117 Q48 100 61 71 Q69 52 91 54 Q104 33 133 43 Q151 48 159 65 Q176 62 187 78 L201 82 Q213 85 208 97 L193 103 Q190 123 174 131 L166 151 L151 151 L151 126 Q130 135 107 126 L101 151 L86 151 L88 124Z" fill="#c9785e" stroke="#70483d" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M91 57 Q79 34 91 20 Q102 34 105 48 Q116 24 132 20 Q130 43 143 53 Q128 48 119 62Z" fill="${info.mane}" stroke="#70483d" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M171 70 Q188 54 201 61 Q195 75 188 83" fill="#e5a47f" stroke="#70483d" stroke-width="2.5"/>
+        <path d="M69 77 Q42 68 35 48 Q59 53 75 65" fill="#e5a47f" stroke="#70483d" stroke-width="2.5"/>
+        <path d="M112 49 Q105 31 113 17 Q126 29 126 47" fill="#e7b36f" stroke="#70483d" stroke-width="2"/>
+        <path d="M133 45 Q145 24 160 23 Q155 43 147 56" fill="#e7b36f" stroke="#70483d" stroke-width="2"/>
+        <circle cx="178" cy="87" r="3.3" fill="#493b34"/>
+        <path d="M190 99 Q198 103 204 98" fill="none" stroke="#70483d" stroke-width="2" stroke-linecap="round"/>
+        <path d="M101 124 L101 149 M164 126 L164 149" stroke="#70483d" stroke-width="3" stroke-linecap="round"/>
+        <path d="M86 151 H104 M150 151 H169" stroke="#70483d" stroke-width="3" stroke-linecap="round"/>
+        <path d="M119 72 Q130 60 140 73 Q130 87 119 72Z" fill="#f3d19a" opacity=".9"/>
+        <path d="M70 38 Q61 27 69 17 M52 47 Q39 40 42 28 M205 45 Q218 34 216 23" fill="none" stroke="#d8795d" stroke-width="4" stroke-linecap="round"/>
+        <path d="M58 107 Q43 99 45 87 M216 115 Q231 106 227 92" fill="none" stroke="#e8b879" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <path d="M30 163 Q130 153 230 163" fill="none" stroke="#d8bda3" stroke-width="1.5" stroke-dasharray="3 5"/>
+    </svg>`;
+  }
+  function draw(){
+    if(drawing)return;
+    drawing=true;$("drawButton").disabled=true;$("machine").classList.add("drawing");
+    $("resultArea").classList.remove("show");
+    $("coinText").textContent="已投入・祝福運轉中…";
+    $("statusText").innerHTML="<strong>機器狀態：</strong>火光亮起，正在為你準備火馬與籤詩……";
+    $("displayContent").innerHTML='<span class="big-icon">✳</span><strong>祝福列印中……</strong><p>請稍候，火馬即將出發。</p>';
+    beep(190,.13,"triangle");setTimeout(()=>beep(270,.13,"triangle"),170);setTimeout(()=>beep(360,.16,"triangle"),340);
+    setTimeout(()=>{
+      let lotIndex=Math.floor(Math.random()*lots.length);
+      if(lots.length>1&&lotIndex===previousLot)lotIndex=(lotIndex+1)%lots.length;
+      previousLot=lotIndex;
+      const lot=lots[lotIndex];
+      current={
+        id:`${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        number:String(Date.now()).slice(-6),size,lot:{...lot},
+        horseName:horseNames[Math.floor(Math.random()*horseNames.length)],
+        horseDescription:horseDescriptions[Math.floor(Math.random()*horseDescriptions.length)]
+      };
+      renderResult(current);
+      $("displayContent").innerHTML='<span class="big-icon">♞</span><strong>火馬與籤詩已送達！</strong><p>請收下這份平安祝福。</p>';
+      $("coinText").textContent="領取完成・祝福已送達";
+      $("statusText").innerHTML="<strong>機器狀態：</strong>領取成功！願火馬陪你平安前行。";
+      $("machine").classList.remove("drawing");$("resultArea").classList.add("show");
+      $("drawButton").disabled=false;drawing=false;
+      $("resultArea").scrollIntoView({behavior:"smooth",block:"nearest"});
+      beep(620,.12);setTimeout(()=>beep(790,.18),120);
+      toast("噹！你的火馬與池王籤已送達。");
+    },1450);
+  }
+  function renderResult(item){
+    $("horseArt").innerHTML=horseSVG(item.size);
+    $("horseName").textContent=item.horseName;
+    $("horseDescription").textContent=`${item.size}・${sizeInfo[item.size].caption}。${item.horseDescription}`;
+    $("lotNumber").textContent=item.lot.no;
+    $("lotGrade").textContent=item.lot.grade;
+    $("lotTitle").textContent=item.lot.title;
+    $("lotPoem").textContent=item.lot.poem;
+    $("lotExplain").innerHTML=item.lot.explain;
+    const exists=saved.some(x=>x.id===item.id|| (x.size===item.size&&x.lot.title===item.lot.title&&x.horseName===item.horseName));
+    $("saveButton").textContent=exists?"✓ 已收藏":"♡ 收藏這組祝福";
+  }
+  function saveCurrent(){
+    if(!current){toast("先領取一隻火馬與籤詩吧！");return}
+    const exists=saved.some(x=>x.id===current.id);
+    if(exists){
+      saved=saved.filter(x=>x.id!==current.id);toast("已從收藏簿移除。");
+    }else{
+      saved.unshift({...current});toast("收藏成功，把這份祝福留在身邊。");beep(740,.1);
+    }
+    localStorage.setItem(storageKey,JSON.stringify(saved));renderCollection();renderResult(current);
+  }
+  function renderCollection(){
+    $("collectionCount").textContent=`${saved.length} 組已收藏`;
+    const list=$("collectionList");list.innerHTML="";
+    if(!saved.length){
+      const empty=document.createElement("div");empty.className="empty";
+      empty.textContent="還沒有收藏的火馬。遇見喜歡的祝福，就把它留下來吧。";
+      list.appendChild(empty);return;
+    }
+    saved.forEach((item,index)=>{
+      const btn=document.createElement("button");btn.type="button";btn.className="saved-item";
+      const small=document.createElement("small");small.textContent=`${item.size}・${item.lot.grade}・收藏 ${String(index+1).padStart(2,"0")}`;
+      const strong=document.createElement("strong");strong.textContent=`${item.horseName}／${item.lot.title}`;
+      const detail=document.createElement("small");detail.textContent=`${item.lot.no}　點擊查看完整祝福`;
+      btn.append(small,strong,detail);btn.addEventListener("click",()=>showSaved(item));
+      list.appendChild(btn);
+    });
+  }
+  function showSaved(item){
+    current=item;renderResult(item);$("resultArea").classList.add("show");
+    $("resultArea").scrollIntoView({behavior:"smooth",block:"nearest"});
+    toast("已打開收藏的火馬與籤詩。");
+  }
+  function restart(){
+    if(drawing)return;
+    current=null;$("resultArea").classList.remove("show");
+    $("coinText").textContent="尚未投入・等待啟動";
+    $("statusText").innerHTML="<strong>機器狀態：</strong>待機中。先挑選一隻想帶回家的火馬吧。";
+    $("displayContent").innerHTML='<span class="big-icon">♞</span><strong>你的火馬正在等候</strong><p>選好火馬大小，按下按鈕<br>領取專屬火馬與池王籤詩。</p>';
+    $("drawButton").disabled=false;window.scrollTo({top:0,behavior:"smooth"});
+    toast("販賣機已重置，請重新選擇火馬大小。");
+  }
+  document.querySelectorAll(".size-option").forEach(btn=>btn.addEventListener("click",()=>setSize(btn.dataset.size)));
+  $("drawButton").addEventListener("click",draw);
+  $("againButton").addEventListener("click",draw);
+  $("saveButton").addEventListener("click",saveCurrent);
+  $("restartButton").addEventListener("click",restart);
+  $("soundToggle").addEventListener("click",()=>{
+    soundOn=!soundOn;
+    $("soundToggle").textContent=soundOn?"♫ 音效：開":"♫ 音效：關";
+    $("soundToggle").setAttribute("aria-pressed",String(soundOn));
+    if(soundOn)beep(600,.1);
+    toast(soundOn?"音效已開啟。":"音效已關閉。");
+  });
+  renderCollection();setSize("小火馬");
+})();
+</script>
+</body>
+</html>
